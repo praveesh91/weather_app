@@ -5,6 +5,8 @@ import device from '../responsive/Device';
 import Result from './Result';
 import NotFound from './NotFound';
 
+import {Container} from 'react-bootstrap'
+
 const AppTitle = styled.h1`
   display: block;
   height: 64px;
@@ -82,7 +84,8 @@ class App extends React.Component {
     const forecast = `https://api.openweathermap.org/data/2.5/forecast?q=${value}&APPID=${APIkey}&units=metric`;
 
     Promise.all([fetch(weather), fetch(forecast)])
-      .then(([res1, res2]) => {
+      .then(([res1, res2, res3]) => {
+        // console.log(res1.json())
         if (res1.ok && res2.ok) {
           return Promise.all([res1.json(), res2.json()]);
         }
@@ -110,7 +113,8 @@ class App extends React.Component {
         }`;
         const sunset = new Date(data1.sys.sunset * 1000).toLocaleTimeString().slice(0, 5);
         const sunrise = new Date(data1.sys.sunrise * 1000).toLocaleTimeString().slice(0, 5);
-
+console.log(data1)
+console.log(data2)
         const weatherInfo = {
           city: data1.name,
           country: data1.sys.country,
@@ -124,6 +128,7 @@ class App extends React.Component {
           sunset,
           clouds: data1.clouds.all,
           humidity: data1.main.humidity,
+          pressure: data1.main.pressure,
           wind: data1.wind.speed,
           forecast: data2.list,
         };
@@ -144,13 +149,11 @@ class App extends React.Component {
 
   render() {
     const { value, weatherInfo, error } = this.state;
+    console.log(weatherInfo)
     return (
-      <>
-        <AppTitle showLabel={(weatherInfo || error) && true}>Weather app</AppTitle>
+      <Container>
+        {/* <AppTitle showLabel={(weatherInfo || error) && true}>Weather app</AppTitle> */}
         <WeatherWrapper>
-          <AppTitle secondary showResult={(weatherInfo || error) && true}>
-            Weather app
-          </AppTitle>
           <SearchCity
             value={value}
             showResult={(weatherInfo || error) && true}
@@ -160,7 +163,7 @@ class App extends React.Component {
           {weatherInfo && <Result weather={weatherInfo} />}
           {error && <NotFound error={error} />}
         </WeatherWrapper>
-      </>
+      </Container>
     );
   }
 }

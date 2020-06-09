@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import device from '../responsive/Device';
 
 const Text = styled.span`
-  color: ${({ color }) => color || '#FFFFFF'};
+  color: ${({ color }) => color || 'black'};
   display: block;
   font-size: ${({ fontSize }) => fontSize || '12px'};
   text-align: ${({ align }) => align || 'left'};

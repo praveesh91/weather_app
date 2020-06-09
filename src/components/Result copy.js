@@ -1,5 +1,5 @@
 import React from 'react';
-import './Result.css';
+import './Result.sass';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -19,8 +19,6 @@ import BigLabel from './BigLabel';
 import MediumLabel from './MediumLabel';
 import SmallLabel from './SmallLabel';
 import Text from './Text';
-import { Row, Col } from 'react-bootstrap';
-import Graph from './Graph'
 
 const Results = styled.div`
   display: flex;
@@ -106,13 +104,13 @@ const WeatherDetailsWrapper = styled.div`
   }
 `;
 
-// const WeatherDetail = styled.div`
-//   flex-basis: calc(100% / 3);
-//   padding: 10px;
-//   @media ${device.laptop} {
-//     padding: 20px 10px;
-//   }
-// `;
+const WeatherDetail = styled.div`
+  flex-basis: calc(100% / 3);
+  padding: 10px;
+  @media ${device.laptop} {
+    padding: 20px 10px;
+  }
+`;
 
 const ForecastWrapper = styled.div`
   flex-basis: 100%;
@@ -134,7 +132,6 @@ const Forecast = styled.div`
   }
 `;
 
-
 const Result = ({ weather }) => {
   const {
     city,
@@ -150,13 +147,9 @@ const Result = ({ weather }) => {
     highestTemp,
     lowestTemp,
     forecast,
-    pressure,
   } = weather;
 
   const forecasts = forecast.map(item => (
-    // console.log(Math.floor(item.main.temp * 1) / 1)
-    // console.log(Math.floor(item.main.temp * 1) / 1)
-    // console.log(Math.floor(item.main.temp * 1) / 1)
     <ForecastHour
       key={item.dt}
       temp={Math.floor(item.main.temp * 1) / 1}
@@ -166,7 +159,6 @@ const Result = ({ weather }) => {
       hour={item.dt_txt.slice(11, 13) * 1}
     />
   ));
-  
 
   let weatherIcon = null;
 
@@ -187,37 +179,84 @@ const Result = ({ weather }) => {
   }
 
   return (
-    <Row>
-      <Col md={3}></Col>
-      <Col md={6}>
-        <div className="temp_container">
-          <p>{Math.floor(temp)}&#176;<span>C</span></p>
-          <p>{weatherIcon}</p>
-        </div>
-      <Graph values={forecast} />
-        
-        <div className="info_container">
-          <Row>
-          <Col xs={5} style={{paddingRight:'10px'}}>
-            <p style={{marginBottom:'5px'}}>Humidity</p>
-            <p>{humidity} %</p>
-          </Col>
-          <Col xs={2}></Col>
-          <Col xs={5}>
-            <p style={{marginBottom:'5px'}}>Pressure</p>
-            <p>{pressure} hpa</p>
-          </Col>
-          </Row>
-        </div>
-      </Col>
-      <Col md={3}></Col>
+    <Results>
+      <LocationWrapper>
+        <BigLabel>
+          {city}, {country}
+        </BigLabel>
+        <SmallLabel weight="400">{date}</SmallLabel>
+      </LocationWrapper>
+      <CurrentWeatherWrapper>
+        <WeatherIcon>{weatherIcon}</WeatherIcon>
+        <TemperatureWrapper>
+          <Temperature>{Math.floor(temp)}&#176;</Temperature>
+          <SmallLabel weight="400" firstToUpperCase>
+            {description}
+          </SmallLabel>
+        </TemperatureWrapper>
+      </CurrentWeatherWrapper>
+      <WeatherDetailsWrapper>
+        <WeatherDetail>
+          <SmallLabel align="center" weight="400">
+            {Math.floor(highestTemp)}&#176;
+          </SmallLabel>
+          <Text align="center">Hight</Text>
+        </WeatherDetail>
+        <WeatherDetail>
+          <SmallLabel align="center" weight="400">
+            {wind}mph
+          </SmallLabel>
+          <Text align="center">Wind</Text>
+        </WeatherDetail>
+        <WeatherDetail>
+          <SmallLabel align="center" weight="400">
+            {sunrise}
+          </SmallLabel>
+          <Text align="center">Sunrise</Text>
+        </WeatherDetail>
+        <WeatherDetail>
+          <SmallLabel align="center" weight="400">
+            {Math.floor(lowestTemp)}&#176;
+          </SmallLabel>
+          <Text align="center">Low</Text>
+        </WeatherDetail>
+        <WeatherDetail>
+          <SmallLabel align="center" weight="400">
+            {humidity}%
+          </SmallLabel>
+          <Text align="center">Rain</Text>
+        </WeatherDetail>
+        <WeatherDetail>
+          <SmallLabel align="center" weight="400">
+            {sunset}
+          </SmallLabel>
+          <Text align="center">Sunset</Text>
+        </WeatherDetail>
+      </WeatherDetailsWrapper>
       <ForecastWrapper>
         <MediumLabel weight="400">Forecast</MediumLabel>
         <Forecast>{forecasts}</Forecast>
       </ForecastWrapper>
-    </Row>
+    </Results>
   );
 };
 
+Result.propTypes = {
+  weather: PropTypes.shape({
+    city: PropTypes.string,
+    country: PropTypes.string,
+    date: PropTypes.string,
+    description: PropTypes.string,
+    main: PropTypes.string,
+    temp: PropTypes.number,
+    sunrise: PropTypes.string,
+    sunset: PropTypes.string,
+    humidity: PropTypes.number,
+    wind: PropTypes.number,
+    highestTemp: PropTypes.number,
+    lowestTemp: PropTypes.number,
+    forecast: PropTypes.array,
+  }).isRequired,
+};
 
 export default Result;

@@ -9,7 +9,7 @@ const SearchBar = styled.form`
   top: ${({ showResult }) => (showResult ? '0%' : '30%')};
   position: relative;
   margin: 0 auto;
-  max-width: 500px;
+  max-width: 570px;
   transition: 0.8s 0.5s;
   @media ${device.laptopL} {
     max-width: 600px;
