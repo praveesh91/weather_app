@@ -1,6 +1,6 @@
 # React - weather-app
 
-https://rawfour.github.io/weather-app-react/
+https://master.d2r34t59wcz43b.amplifyapp.com/
 
 
 ## Instructions
