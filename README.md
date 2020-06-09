@@ -2,11 +2,6 @@
 
 https://rawfour.github.io/weather-app-react/
 
-## Table of contents
-* [Instructions](#Instructions)
-* [Description](#Description)
-* [Technologies](#Technologies)
-
 
 ## Instructions
 
